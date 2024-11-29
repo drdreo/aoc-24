@@ -1,4 +1,4 @@
-import { runSolution } from '../utils.ts';
+import { runSolution } from "../utils.ts";
 
 /** provide your solution as the return of this function */
 export async function day10b(data: string[]) {
@@ -6,4 +6,4 @@ export async function day10b(data: string[]) {
   return 0;
 }
 
-await runSolution(day10b);
+await runSolution(day10b, import.meta.url);
