@@ -1,0 +1,19 @@
+{
+  "name": "@aoc-24/source",
+  "version": "0.0.0",
+  "license": "MIT",
+  "scripts": {},
+  "private": true,
+  "dependencies": {
+    "chalk": "latest",
+    "ts-aoc-starter": "2.0.0"
+  },
+  "devDependencies": {
+    "@nx/workspace": "20.1.3",
+    "@types/node": "latest",
+    "nx": "20.1.3",
+    "tsx": "latest",
+    "typescript": "latest"
+  },
+  "type": "module"
+}
