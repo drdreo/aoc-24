@@ -1,5 +1,5 @@
-import { parseArgs } from "jsr:@std/cli/parse-args";
-import { join } from "jsr:@std/path";
+import { parseArgs } from "@std/cli/parse-args";
+import { join } from "@std/path";
 
 export async function runSolution(
     solution: (data: string[]) => any,
