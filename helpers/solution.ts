@@ -1,5 +1,4 @@
-import { parseArgs } from "@std/cli/parse-args";
-import { join } from "@std/path";
+import {parseArgs} from "@std/cli/parse-args";
 
 export async function runSolution(
     solution: (data: string[]) => any,
@@ -8,27 +7,28 @@ export async function runSolution(
     const dataset = getDatasetNameFromFlags();
     const data = await readData(dir, dataset);
     const answer = await solution(data);
-    console.log("%cYour Answer:", "background-color: #0476D0;", answer);
+
+    const isAnswerArray = Array.isArray(answer);
+    console.log("%cYour Answer:", "background-color: #0476D0;", ...(isAnswerArray ? answer : [answer]));
 }
 
 export async function readData(fullPath: string, datasetName = "") {
+    const path = new URL(fullPath.split("/").slice(0, -1).join("/")).pathname.substring(1);
+
     const puzzle = fullPath.split("/").slice(-2).join("/").split(".")[0];
-    const [day, part] = puzzle
+    const [_, part] = puzzle
         .split("/")
         .map((x, i) => (i === 0 ? +x.split("-")[1] : x)) as [number, "a" | "b"];
-    const fileName = `${import.meta.dirname!}/${createFileName(day, part, datasetName)}`;
+    const fileName = `${path}/${createFileName(part, datasetName)}`;
     const fileContent = await Deno.readTextFile(fileName);
-    if(!fileContent) {
+    if (!fileContent) {
         throw new Error(`File is empty: ${fileName}`);
     }
     return cleanData(fileContent);
 }
 
-function createFileName(day: number, part: "a" | "b", dataSet?: string) {
-    return join(
-        `day-${day}`,
-        `${part}.data${dataSet ? `.${dataSet}` : ""}.txt`,
-    );
+function createFileName(part: "a" | "b", dataSet?: string) {
+    return `${part}.data${dataSet ? `.${dataSet}` : ""}.txt`;
 }
 
 function cleanData(fileContent: string): string[] {

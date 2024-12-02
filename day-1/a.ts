@@ -1,6 +1,6 @@
 import {assert} from "@std/assert";
-import {extractSmallestNumFromArray} from "../array.ts";
-import {runSolution} from "../utils.ts";
+import {extractSmallestNumFromArray} from "../helpers/array.ts";
+import {runSolution} from "../helpers/solution.ts";
 
 /** provide your solution as the return of this function */
 export async function day1a(data: string[]) {

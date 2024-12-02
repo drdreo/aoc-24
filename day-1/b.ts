@@ -1,6 +1,6 @@
 import {assert} from "@std/assert";
-import {countNumInArray} from "../array.ts";
-import {runSolution} from "../utils.ts";
+import {countNumInArray} from "../helpers/array.ts";
+import {runSolution} from "../helpers/solution.ts";
 
 /** provide your solution as the return of this function */
 export async function day1b(data: string[]) {
