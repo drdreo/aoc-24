@@ -43,11 +43,22 @@ export function countNumInArray(num: number, list: number[]): number {
  *  - [5,3]     --> [-2]
  * @param list
  */
-export function reduceToNumberDifferences( list: number[]): number[] {
+export function reduceToNumberDifferences(list: number[]): number[] {
     return list.reduce((acc, num, i) => {
         if (i < list.length - 1) {
             acc.push(list[i + 1] - num);
         }
         return acc;
     }, [] as number[]);
+}
+
+/**
+ * Returns the average number of the array.
+ * example:
+ *  - [1,2,3]   --> 2
+ *  - [-2,2]    --> 0
+ * @param list
+ */
+export function reduceToAverage(list: number[]): number {
+    return list.reduce((acc, num) => acc + num, 0) / list.length;
 }

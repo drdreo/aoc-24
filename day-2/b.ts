@@ -1,4 +1,4 @@
-import {reduceToNumberDifferences} from "../helpers/array.ts";
+import {reduceToAverage, reduceToNumberDifferences} from "../helpers/array.ts";
 import {Logger} from "../helpers/logger.ts";
 import {isNegative, isPositive} from "../helpers/numbers.ts";
 import {runSolution} from "../helpers/solution.ts";
@@ -22,7 +22,7 @@ export async function day2b(data: string[]) {
         }
 
         // Find indices of invalid transitions
-        const isIncreasing = differences[0] > 0;
+        const isIncreasing = reduceToAverage(differences) >= 0;
         const badIndices = differences
             .map((diff, i) => (isValidTransition(diff, isIncreasing) ? -1 : i))
             .filter((index) => index !== -1);
@@ -101,7 +101,7 @@ await runSolution(day2b, import.meta.url);
 // await runSolution(claude2b, import.meta.url);
 
 // await myLogger.saveToFile();
-myLogger.print();
+// myLogger.print();
 
 // myLogger.compare(claudeLogger);
 
