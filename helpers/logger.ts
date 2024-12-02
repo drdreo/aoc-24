@@ -13,11 +13,12 @@ export class Logger {
     }
 
     print() {
-        console.group(`Logger: ${this.name}`);
-        for (const logEntry of this.logs) {
-            console.log(...logEntry);
-        }
-        console.groupEnd();
+        console.table(this.logs)
+        // console.group(`Logger: ${this.name}`);
+        // for (const logEntry of this.logs) {
+        //     console.log(...logEntry);
+        // }
+        // console.groupEnd();
     }
 
     async saveToFile() {

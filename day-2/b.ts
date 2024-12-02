@@ -17,7 +17,8 @@ export async function day2b(data: string[]) {
 
         if (isLineSafe(differences)) {
             safeReports++;
-            myLogger.log(`Line ${lIdx}: ${line.join(",")} - SAFE (original)`);
+            myLogger.log(`Line ${lIdx}`, `${line.join(",")}`, `SAFE (original)`);
+
             continue;
         }
 
@@ -32,9 +33,7 @@ export async function day2b(data: string[]) {
         let originalLine = [...line];
         let fixedLine = line.toSpliced(badIdx, 1);
         if (isLineSafe(reduceToNumberDifferences(fixedLine))) {
-            myLogger.log(
-                `Line ${lIdx}: ${originalLine.join(",")} - SAFE`,
-            );
+            myLogger.log(`Line ${lIdx}`, `${originalLine.join(",")}`, `SAFE`);
 
             safeReports++;
             continue;
@@ -45,16 +44,14 @@ export async function day2b(data: string[]) {
             originalLine = [...line];
             fixedLine = line.toSpliced(badIdx + 1, 1);
             if (isLineSafe(reduceToNumberDifferences(fixedLine))) {
-                myLogger.log(
-                    `Line ${lIdx}: ${originalLine.join(",")} - SAFE`,
-                );
+                myLogger.log(`Line ${lIdx}`, `${originalLine.join(",")}`, `SAFE`);
 
                 safeReports++;
                 continue;
             }
         }
 
-        myLogger.log(`Line ${lIdx}: ${originalLine.join(",")} - UNSAFE`);
+        myLogger.log(`Line ${lIdx}`, `${originalLine.join(",")}`, `UNSAFE`);
     }
 
     return [safeReports, "safe reports"];
@@ -101,7 +98,7 @@ await runSolution(day2b, import.meta.url);
 // await runSolution(claude2b, import.meta.url);
 
 // await myLogger.saveToFile();
-// myLogger.print();
+myLogger.print();
 
 // myLogger.compare(claudeLogger);
 
