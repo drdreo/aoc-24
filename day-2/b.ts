@@ -1,7 +1,7 @@
-import {reduceToAverage, reduceToNumberDifferences} from "../helpers/array.ts";
-import {Logger} from "../helpers/logger.ts";
-import {isNegative, isPositive} from "../helpers/numbers.ts";
-import {runSolution} from "../helpers/solution.ts";
+import { reduceToAverage, reduceToNumberDifferences } from "../helpers/array.ts";
+import { Logger } from "../helpers/logger.ts";
+import { isNegative, isPositive } from "../helpers/numbers.ts";
+import { runSolution } from "../helpers/solution.ts";
 
 const myLogger = new Logger("Mine");
 const claudeLogger = new Logger("Claude");
@@ -94,7 +94,7 @@ export async function claude2b(data: string[]) {
     return [safeReports, "safe reports"];
 }
 
-await runSolution(day2b, import.meta.url);
+if (import.meta.main) await runSolution(day2b, import.meta.url);
 // await runSolution(claude2b, import.meta.url);
 
 // await myLogger.saveToFile();

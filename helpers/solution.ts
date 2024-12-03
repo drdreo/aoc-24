@@ -1,15 +1,19 @@
-import {parseArgs} from "@std/cli/parse-args";
+import { parseArgs } from "@std/cli/parse-args";
+import { assert } from "@std/assert";
 
 export async function runSolution(
     solution: (data: string[]) => any,
     dir: string,
 ) {
     const dataset = getDatasetNameFromFlags();
+    console.log(`%cRunning ${dataset ?? ""} solution for ${dir}`, "background-color: #333; color: white;");
     const data = await readData(dir, dataset);
     const answer = await solution(data);
 
     const isAnswerArray = Array.isArray(answer);
-    console.log("%cYour Answer:", "background-color: #0476D0;", ...(isAnswerArray ? answer : [answer]));
+    const answerColor = dataset === "sample" ? "#0476D0" : "red";
+    const answerType = dataset === "sample" ? "Sample Answer" : "Answer";
+    console.log(`%c${answerType}:`, `background-color: ${answerColor};`, ...(isAnswerArray ? answer : [answer]));
 }
 
 export async function readData(fullPath: string, datasetName = "") {
@@ -21,9 +25,7 @@ export async function readData(fullPath: string, datasetName = "") {
         .map((x, i) => (i === 0 ? +x.split("-")[1] : x)) as [number, "a" | "b"];
     const fileName = `${path}/${createFileName(part, datasetName)}`;
     const fileContent = await Deno.readTextFile(fileName);
-    if (!fileContent) {
-        throw new Error(`File is empty: ${fileName}`);
-    }
+    assert(fileContent, "File is empty");
     return cleanData(fileContent);
 }
 

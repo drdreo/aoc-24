@@ -13,7 +13,7 @@ export class Logger {
     }
 
     print() {
-        console.table(this.logs)
+        console.table(this.logs);
         // console.group(`Logger: ${this.name}`);
         // for (const logEntry of this.logs) {
         //     console.log(...logEntry);
@@ -23,8 +23,8 @@ export class Logger {
 
     async saveToFile() {
         const ROOT_FOLDER = import.meta.url;
-        const logFolder = `${ROOT_FOLDER}/logs`
-        await Deno.mkdir(logFolder, {recursive: true});
+        const logFolder = `${ROOT_FOLDER}/logs`;
+        await Deno.mkdir(logFolder, { recursive: true });
         const logFilePath = `${logFolder}/${this.name}.log`;
         await Deno.writeTextFile(logFilePath, this.logs.join("\n"));
     }
@@ -53,3 +53,5 @@ export class Logger {
         }
     }
 }
+
+export const logger = new Logger("default");

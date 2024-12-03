@@ -1,6 +1,6 @@
-import {assert} from "@std/assert";
-import {countNumInArray} from "../helpers/array.ts";
-import {runSolution} from "../helpers/solution.ts";
+import { assert } from "@std/assert";
+import { countNumInArray } from "../helpers/array.ts";
+import { runSolution } from "../helpers/solution.ts";
 
 /** provide your solution as the return of this function */
 export async function day1b(data: string[]) {
@@ -17,13 +17,12 @@ export async function day1b(data: string[]) {
 
     let similarity = 0;
 
-    for(let entry of list1){
+    for (let entry of list1) {
         const count = countNumInArray(entry, list2);
         similarity += count * entry;
     }
 
-
     return similarity;
 }
 
-await runSolution(day1b, import.meta.url);
+if (import.meta.main) await runSolution(day1b, import.meta.url);
