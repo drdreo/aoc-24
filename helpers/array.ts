@@ -1,3 +1,5 @@
+import { assert } from "@std/assert";
+
 /*
  * Array utility functions
  */
@@ -61,4 +63,16 @@ export function reduceToNumberDifferences(list: number[]): number[] {
  */
 export function reduceToAverage(list: number[]): number {
     return list.reduce((acc, num) => acc + num, 0) / list.length;
+}
+
+
+export function getMedianValue(list: number[]): number {
+    list.sort((a, b) => a - b);
+    return getMiddleValue(list);
+}
+
+export function getMiddleValue(list: number[]): number {
+    assert(list.length > 0, "List must have at least one element");
+    const half = Math.floor(list.length / 2);
+    return list[half];
 }
