@@ -6,4 +6,4 @@ export async function day14b(data: string[]) {
     return 0;
 }
 
-if (import.meta.main) { await runSolution(day14b, import.meta.url); }
+if (import.meta.main) await runSolution(day14b, import.meta.url);

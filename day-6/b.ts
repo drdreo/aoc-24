@@ -20,10 +20,10 @@ function findLoopObstructionPositions(originalMatrix: string[][]): [number, numb
             if (x === guardLocation[0] && y === guardLocation[1]) continue;
 
             // Skip existing obstructions
-            if (originalMatrix[y][x] === '#') continue;
+            if (originalMatrix[y][x] === "#") continue;
 
             // Modify the original matrix in-place instead of creating a copy
-            originalMatrix[y][x] = '#';
+            originalMatrix[y][x] = "#";
 
             const isLooping = simulateGuardMovement(originalMatrix, guardLocation);
 
@@ -32,7 +32,7 @@ function findLoopObstructionPositions(originalMatrix: string[][]): [number, numb
             }
 
             // Restore the original state
-            originalMatrix[y][x] = '.';
+            originalMatrix[y][x] = ".";
         }
     }
 
@@ -44,7 +44,7 @@ function simulateGuardMovement(matrix: string[][], initialLocation: [number, num
     const visitedStates = new Set<string>();
     let runCount = 0;
 
-    while (runCount < 10_000) {  // Use a fixed, known good max iteration count
+    while (runCount < 10_000) { // Use a fixed, known good max iteration count
         const stateKey = `${currentLocation[0]},${currentLocation[1]},${currentLocation[2]}`;
 
         if (visitedStates.has(stateKey)) {

@@ -65,7 +65,6 @@ export function reduceToAverage(list: number[]): number {
     return list.reduce((acc, num) => acc + num, 0) / list.length;
 }
 
-
 export function getMedianValue(list: number[]): number {
     list.sort((a, b) => a - b);
     return getMiddleValue(list);

@@ -42,5 +42,5 @@ function getDatasetNameFromFlags(): "sample" | undefined {
         string: ["real"],
     });
     console.log(flags);
-    return typeof flags.real === 'string' ? undefined : "sample";
+    return typeof flags.real === "string" ? undefined : "sample";
 }
