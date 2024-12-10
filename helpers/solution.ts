@@ -41,6 +41,5 @@ function getDatasetNameFromFlags(): "sample" | undefined {
     const flags = parseArgs(Deno.args, {
         string: ["real"],
     });
-    console.log(flags);
     return typeof flags.real === "string" ? undefined : "sample";
 }
