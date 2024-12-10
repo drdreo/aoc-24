@@ -1,5 +1,5 @@
-import { parseArgs } from "@std/cli/parse-args";
 import { assert } from "@std/assert";
+import { parseArgs } from "@std/cli/parse-args";
 
 export async function runSolution(
     solution: (data: string[]) => any,
@@ -37,9 +37,10 @@ function cleanData(fileContent: string): string[] {
     return fileContent.split("\n").map((x) => x.replace("\r", "").trim());
 }
 
-function getDatasetNameFromFlags(): string | undefined {
+function getDatasetNameFromFlags(): "sample" | undefined {
     const flags = parseArgs(Deno.args, {
-        string: ["dataset"],
+        string: ["real"],
     });
-    return flags.dataset;
+    console.log(flags);
+    return typeof flags.real === 'string' ? undefined : "sample";
 }
