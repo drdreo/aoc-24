@@ -39,3 +39,14 @@ export function getCloseCharacterLocations(
 
     return locations.length > 0 ? locations : undefined;
 }
+
+export function getDistanceBetweenPoints(p1: Point, p2: Point): number {
+    const dx = p2.x - p1.x;
+    const dy = p2.y - p1.y;
+    return Math.sqrt(dx * dx + dy * dy);
+}
+
+export type Point = {
+    x: number;
+    y: number;
+};
