@@ -1,124 +1,77 @@
-import { convertLinesTo2DMatrix } from "../helpers/matrix.ts";
+import { uniqueBy } from "../helpers/array.ts";
+import { convertLinesTo2DMatrix, Point } from "../helpers/matrix.ts";
 import { runSolution } from "../helpers/solution.ts";
-import { Antenna, findAntennas, visualizeAntinodes } from "./a.ts";
+import { Antenna, findAntennas, visualizePoints } from "./a.ts";
 
 let MATRIX_SIZE = 0;
 
+const seenPoints = new Set<string>();
+
 /** provide your solution as the return of this function */
 export async function day8b(data: string[]) {
-    const matrix = convertLinesTo2DMatrix(data);
-    MATRIX_SIZE = matrix.length;
-    const antennas = findAntennas(matrix);
-    const antinodes = findAntinodes(antennas);
+  const matrix = convertLinesTo2DMatrix(data);
+  MATRIX_SIZE = matrix.length;
+  console.log({MATRIX_SIZE});
+  const antennas = findAntennas(matrix);
+  const antinodes = findAntinodes(antennas);
 
-    visualizeAntinodes(matrix, antinodes);
-    return antinodes.length;
+  // visualizePoints(matrix, antinodes);
+  return antinodes.length;
 }
 
-export function findAntinodes(antennas: Antenna[]): Antenna[] {
-    const antinodes: Antenna[] = [];
+export function findAntinodes(antennas: Antenna[]): Point[] {
+  // todo, group by frequency
 
-    // Group antennas by their frequency
-    const frequencyGroups = antennas.reduce((groups, antenna) => {
-        if (!groups[antenna.frequency]) {
-            groups[antenna.frequency] = [];
-        }
-        groups[antenna.frequency].push(antenna);
-        return groups;
-    }, {} as Record<string, Antenna[]>);
+  const antennaGroups = Object.groupBy(antennas, ({ frequency }) => frequency);
+  const antinodes = [];
+  for (const [_, group] of Object.entries(antennaGroups)) {
+    if (!group || group.length < 2) continue;
 
-    // Check each frequency group for antinodes
-    for (const [frequency, group] of Object.entries(frequencyGroups)) {
-        // Check each pair of antennas with the same frequency
-        for (let i = 0; i < group.length; i++) {
-            for (let j = i + 1; j < group.length; j++) {
-                const antenna1 = group[i];
-                const antenna2 = group[j];
+    for (let i = 0; i < group.length; i++) {
+      for (let j = i + 1; j < group.length; j++) {
+        const p1 = { x: group[i].x, y: group[i].y };
+        const p2 = { x: group[j].x, y: group[j].y };
 
-                // Find extended antinodes
-                const newAntinodes = findExtendedAntinodes(antenna1, antenna2);
-                antinodes.push(...newAntinodes);
-            }
-        }
+        antinodes.push(...calculateAntinodes(p1, p2));
+      }
     }
+  }
 
-    // Remove duplicate antinodes
-    // Remove duplicate antinodes
-    return antinodes;
+  return uniqueBy(antinodes, ({ x, y }) => `${x},${y}`);
 }
 
-function findExtendedAntinodes(
-    antenna1: Antenna,
-    antenna2: Antenna,
-): Antenna[] {
-    const explored = new Set<string>();
+function calculateAntinodes(p1: Point, p2: Point): Point[] {
+  const dx = p2.x - p1.x;
+  const dy = p2.y - p1.y;
 
-    const vectorX = antenna2.x - antenna1.x;
-    const vectorY = antenna2.y - antenna1.y;
+  return [
+    ...calculatePointsOnLine(p1, dx, dy),
+    ...calculatePointsOnLine(p1, -dx, -dy),
+  ];
+}
 
-    function exploreAntinodes(start: Antenna, end: Antenna): Antenna[] {
-           // First antinode by subtracting the vector from start
-        const antinode1: Antenna = {
-            x: start.x - vectorX,
-            y: start.y - vectorY,
-            frequency: start.frequency,
-        };
+function calculatePointsOnLine(start: Point, stepX: number, stepY: number): Point[] {
+  const points = [];
 
-        // Second antinode by adding the vector to end
-        const antinode2: Antenna = {
-            x: end.x + vectorX,
-            y: end.y + vectorY,
-            frequency: end.frequency,
-        };
-
-        const results: Antenna[] = [];
-
-        // Explore and validate both antinodes
-        [antinode1, antinode2].forEach((antinode) => {
-            const key = `${antinode.x},${antinode.y},${antinode.frequency}`;
-
-            // Ensure we haven't explored this antinode before
-            if (explored.has(key) || !isValidAntinode(antinode)) return;
-            explored.add(key);
-
-            // Add to results if valid
-            results.push(antinode);
-
-            // Recursively explore from the new antinodes
-            results.push(
-                ...exploreAntinodes(start, antinode),
-                ...exploreAntinodes(antinode, end),
-            );
-        });
-
-        return results;
+  let { x, y } = start;
+  let isValid = true;
+  while (isValid) {
+    const nP = { x: Math.round(x), y: Math.floor(y) };
+    if (isValidAntinode(nP)) {
+      points.push(nP);
+      x += stepX;
+      y += stepY;
+    } else {
+      isValid = false;
     }
+  }
 
-    return exploreAntinodes(antenna1, antenna2);
+  return points;
 }
 
-export function findAntinodesBetweenAntennas(a1: Antenna, a2: Antenna): Antenna[] {
-    console.log(a1, a2);
-    const dx = a2.x - a1.x;
-    const dy = a2.y - a1.y;
-
-    const antinode1: Antenna = {
-        frequency: a1.frequency,
-        x: a1.x - dx,
-        y: a1.y - dy,
-    };
-    const antinode2: Antenna = {
-        frequency: a2.frequency,
-        x: a2.x + dx,
-        y: a2.y + dy,
-    };
-
-    return [antinode1, antinode2];
-}
-
-export function isValidAntinode(antinode: Antenna): boolean {
-    const { x, y } = antinode;
-    return x >= 0 && y >= 0 && x < MATRIX_SIZE && y < MATRIX_SIZE;
+export function isValidAntinode(point: Point): boolean {
+  const { x, y } = point;
+  return x >= 0 && y >= 0 && x < MATRIX_SIZE && y < MATRIX_SIZE;
 }
 
 if (import.meta.main) await runSolution(day8b, import.meta.url);

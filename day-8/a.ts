@@ -1,4 +1,4 @@
-import { convertLinesTo2DMatrix } from "../helpers/matrix.ts";
+import {convertLinesTo2DMatrix, Point} from "../helpers/matrix.ts";
 import { runSolution } from "../helpers/solution.ts";
 
 export interface Antenna {
@@ -16,11 +16,11 @@ export async function day8a(data: string[]) {
     const antennas = findAntennas(matrix);
     const antinodes = findAntinodes(antennas);
 
-    visualizeAntinodes(matrix, antinodes);
+    visualizePoints(matrix, antinodes);
     return antinodes.length;
 }
 
-if(import.meta.main) await runSolution(day8a, import.meta.url);
+if (import.meta.main) await runSolution(day8a, import.meta.url);
 
 export function findAntennas(matrix: string[][]): Antenna[] {
     const antennas: Antenna[] = [];
@@ -69,7 +69,9 @@ export function findAntinodes(antennas: Antenna[]): Antenna[] {
     }
 
     // Remove duplicate antinodes
-    return Array.from(new Set(antinodes.map(({x,y}) => `{"x":${x},"y":${y}, "frequency": -1}`))).map((a) => JSON.parse(a));
+    return Array.from(new Set(antinodes.map(({ x, y }) => `{"x":${x},"y":${y}, "frequency": -1}`))).map((a) =>
+        JSON.parse(a)
+    );
 }
 
 export function findAntinodesBetweenAntennas(a1: Antenna, a2: Antenna): Antenna[] {
@@ -96,9 +98,9 @@ export function isValidAntinode(antinode: Antenna): boolean {
     return x >= 0 && y >= 0 && x < MATRIX_SIZE && y < MATRIX_SIZE;
 }
 
-export function visualizeAntinodes(matrix: string[][], antinodes: Antenna[]) {
+export function visualizePoints(matrix: string[][], points: Point[]) {
     const m = matrix.map((row) => row.slice());
-    antinodes.forEach(({ x, y }) => {
+    points.forEach(({ x, y }) => {
         m[y][x] = "#";
     });
 

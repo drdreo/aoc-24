@@ -9,7 +9,7 @@
  * // returns [['a', 'b', 'c'], ['d', 'e', 'f']]
  */
 export function convertLinesTo2DMatrix(lines: string[]) {
-    return lines.map((l) => l.split(""));
+    return lines.map((l) => l.split("")).filter((l) => l.length > 0);
 }
 
 export function getCloseCharacterLocations(
