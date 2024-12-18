@@ -5,8 +5,6 @@ import { Antenna, findAntennas, visualizePoints } from "./a.ts";
 
 let MATRIX_SIZE = 0;
 
-const seenPoints = new Set<string>();
-
 /** provide your solution as the return of this function */
 export async function day8b(data: string[]) {
   const matrix = convertLinesTo2DMatrix(data);
